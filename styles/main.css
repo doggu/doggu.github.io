@@ -1,0 +1,29 @@
+header {
+    background:#ff33ff;
+    color:#eeeddd;
+    padding:10px;
+    text-align: center;
+}
+
+header h2 {
+    background:#333333;
+}
+
+header h2 li {
+    display:inline;
+}
+
+header h2 li a {
+    color:#ff44ff;
+}
+
+body {
+    color:#eeddee;
+    background:#224422;
+}
+
+li {
+    color:#333333;
+    background:#eeddee;
+    padding: 5px 5px 5px 5px;
+}
