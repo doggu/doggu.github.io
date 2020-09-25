@@ -19,11 +19,47 @@ header h2 li a {
 
 body {
     color:#eeddee;
-    background:#224422;
 }
 
 li {
     color:#333333;
     background:#eeddee;
     padding: 5px 5px 5px 5px;
+}
+
+html {
+    --b:180;
+    min-height:100%;
+    min-width:100%;
+    background-image:repeating-linear-gradient(to right,rgb(var(--b),0,var(--b)),rgb(0,0,var(--b)),rgb(0,var(--b),0),rgb(var(--b),var(--b),0),rgb(var(--b),calc(var(--b)/2),0),rgb(var(--b),0,0),rgb(var(--b),0,var(--b)));
+    background-size:700% 700%;
+    animation:rainbow-fw 8s ease-in-out infinite;
+}
+
+html::before {
+    content:"";
+    z-index:-1;
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-image:repeating-linear-gradient(to right,rgb(var(--b),0,var(--b)),rgb(var(--b),0,0),rgb(var(--b),calc(var(--b)/2),0),rgb(var(--b),var(--b),0),rgb(0,var(--b),0),rgb(0,0,var(--b)),rgb(var(--b),0,var(--b)));
+    background-size:700% 700%;
+    /* this is jank */
+    animation:rainbow-rev 7s ease-in-out infinite;
+    -webkit-mask:linear-gradient(#fff,transparent);
+            mask:linear-gradient(#fff,transparent);
+}
+
+@keyframes rainbow-fw {
+    0%   {background-position:0%   50%}
+    50%  {background-position:100% 25%}
+    100% {background-position:0%   50%}
+}
+
+@keyframes rainbow-rev {
+    0%   {background-position:50% 0%}
+    50%  {background-position:25% 100%}
+    100% {background-position:50% 0%}
 }
