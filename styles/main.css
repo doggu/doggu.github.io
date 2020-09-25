@@ -1,8 +1,22 @@
 header {
     background:#ff33ff;
-    color:#eeeddd;
     padding:10px;
     text-align: center;
+}
+
+header h1 {
+    z-index:-1;
+    background-image:repeating-linear-gradient(to right,rgb(var(--b),0,var(--b)),rgb(var(--b),0,0),rgb(var(--b),calc(var(--b)/2),0),rgb(var(--b),var(--b),0),rgb(0,var(--b),0),rgb(0,0,var(--b)),rgb(var(--b),0,var(--b)));
+    background-size:700% 700%;
+    /* this is jank */
+    animation:rainbow-rev 7s ease-in-out infinite;
+    /* -webkit-mask:linear-gradient(#fff,transparent);
+            mask:linear-gradient(#fff,transparent); */
+    
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: 32pt;
 }
 
 header h2 {
