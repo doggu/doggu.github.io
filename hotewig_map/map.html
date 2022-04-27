@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    div { border: 1px dashed }
+    body {
+        display: grid;
+        grid-template-columns: auto auto 10em;
+        grid-template-areas:
+            /*"header header  header"*/
+            "left   middle  right"
+            "footer footer  footer";
+    /*    end goal: format conscious of view dimension ratio such that square views put the video on top of the
+    map and wider views put them next to each other (the map is more flexible in its dimensions)*/
+    }
+
+    .slidecontainer {
+        width: 98%
+    }
+    .slider {
+        width: 98%
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>map</title>
+
+<!--    youtube video embed-->
+    <script>
+        // load Youtube API code asynchronously
+        var tag = document.createElement('script')
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0]
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+
+        var player // variable to hold new YT.Player() instance
+
+        // define onYouTubeIframeAPIReady() function and initialize a Youtube video player when the API has loaded
+        // noinspection JSUnusedGlobalSymbols
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '450',
+                width: '800',
+                // playerVars: {autoplay:0, loop:0},
+                playerVars: {
+                    autoplay: 0,
+                    start: 254,
+                    // end: 258,
+                    loop: 0,
+                    playsinline: 1,
+                    // controls: 0,
+                    rel: 0,
+                    volume: 0.2
+                    // playlist: nil,
+                },
+                videoId: 'xuCn8ux2gbs',
+                events: {
+                    'onReady': function(event){},
+                    'onStateChange': function(event){
+                        //todo: reflect state change in left column as a test (match to switch case)
+                        //todo: i have no idea what i'm doing
+                        console.log(event.data)
+                        // let outputTag = document.getElementById('output')
+                        // var tag = document.createElement('h1')
+                        // tag.textContent = 'peepee'+event.data
+                        // outputTag.insertBefore(tag, outputTag)
+                    }
+                }
+            })
+        }
+
+        function startVideo() {
+            player.playVideo()
+            player.seekTo(254)
+        }
+
+        function pauseVideo() {
+            if (player.paused) {
+                player.playVideo()
+            } else {
+                player.pauseVideo()
+            }
+        }
+        function stopVideo() {
+            player.stopVideo()
+        }
+    </script>
+    <!--    big slide-->
+
+    <!--    loading map shit idk what's oging on-->
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+    <link href="jqvmap/jqvmap.css" media="screen" rel="stylesheet" type="text/css"/>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="jqvmap/jquery.vmap.js"></script>
+    <script type="text/javascript" src="jqvmap/jquery.vmap.world.js" charset="utf-8"></script>
+    <script type="text/javascript" src="jqvmap/jquery.vmap.sampledata.js"></script>
+    <script>
+
+        //map time
+
+        jQuery(document).ready(function () {
+            jQuery('#vmap').vectorMap({
+                map: 'world_en',
+                backgroundColor: '#333333',
+                color: '#ffffff',
+                hoverOpacity: 0.7,
+                selectedColor: '#666666',
+                enableZoom: true,
+                showTooltip: true,
+                scaleColors: ['#C8EEFF', '#006491'],
+                values: sample_data,
+                normalizeFunction: 'polynomial',
+                onRegionClick: onRegionClick,
+            });
+        });
+
+        //providing a static json file with a website seems weirdly difficult
+        // let regions_text =
+
+        let region_timestamps = {
+            "China": [345, 396, 676, 437],
+            "United States of America": [955],
+            "France": [862],
+            "Brazil": [830],
+            "Australia": [859],
+            "Greenland": [612],
+            "Iceland": [612],
+            "Canada": [823],
+            "India": [412],
+            "United Kingdom": [890],
+            "Russian Federation": [990],
+            "Japan": [673],
+            "Israel": [459],
+            "Portugal": [806]
+        }
+
+        console.log(region_timestamps["China"])
+
+        function onRegionClick(event, code, region) {
+            console.log(code)
+            console.log(region)
+
+            let times = region_timestamps[region]
+
+            if (times != null) {
+                if (times.length < 0) {
+                    return
+                }
+
+                player.seekTo(times[Math.floor(times.length*Math.random())])
+            }
+        }
+    </script>
+    <script>
+        //i guess this is doing the same thing
+        var tag = document.createElement('script')
+    </script>
+</head>
+<body>
+<!--<div style="grid-area: header">The header</div>;-->
+<div style="grid-area: left">
+    <button onclick="startVideo()">play</button><br>
+    <button onclick="pauseVideo()">pause</button><br>
+    <button onclick="stopVideo()">stop</button><br>
+    state
+    <div id="output"></div>
+</div>
+<div style="grid-area: middle; height: 451px"><div id="player"></div></div>
+<div style="grid-area: right">maybe some kind of blurb or transcript (since i'm gonna be transcribing this whole video anyway)</div>
+<div style="grid-area: footer">
+    <div class="slidecontainer">
+        <input type="range" min="0" max="2000" value="50" class="slider" id="myRange">
+        <script>
+            var slider = document.getElementById("myRange");
+            if (slider === null) {
+                console.log("what the heck")
+            }
+            // var output = document.getElementById("demo");
+            // output.innerHTML = slider.value; // Display the default slider value
+
+            // var slider = document.getElementById("myRange")
+            slider.oninput = function() {
+                let out = this.value/(this.max-this.min)*1165
+                console.log(out)
+                // output.innerHTML = this.value
+                player.seekTo(out)
+            }
+        </script>
+    </div>
+    <div id="vmap" style="width: 1200px; height: 800px;"></div>
+    <br>
+    concept: organize topics in history of the entire world, i guess by country.
+    <br>
+    while the definition of countries is always changing, relating history to what it is now might be
+    entertaining/informative (as the video itself operates on an entirely different gear)
+    <br>
+    <br>
+    other ways to organize topics:
+    <ul>
+        <li>science/technology</li>
+        <li>religion</li>
+        <li>conflicts (or have the map borders change) (borders will be impossible)
+        <li>colonialism</li>
+        <li>ages (borders may be manageable)</li>
+        <li></li>
+    </ul>
+</div>
+</body>
+</html>
